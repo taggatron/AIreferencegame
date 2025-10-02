@@ -3,7 +3,6 @@ const sourcesBySubject = {
     // Core AI referencing (JCQ-style inspired) examples. Always verify against latest institutional guidance.
     {
       source: { title: 'ChatGPT conversation (ethical implications prompt)', type: 'AI Tool Output', authors: 'OpenAI', year: '2025' },
-      showHint: true,
       correct: 'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Explain the ethical implications of AI in secondary education, focusing on assessment integrity." Generated 19 September 2025. Available at: https://chat.openai.com/ (Accessed: 19 September 2025).',
       options: [
         'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Explain the ethical implications of AI in secondary education, focusing on assessment integrity." Generated 19 September 2025. Available at: https://chat.openai.com/ (Accessed: 19 September 2025).',
@@ -13,7 +12,6 @@ const sourcesBySubject = {
     },
     {
       source: { title: 'Subject knowledge recap prompt', type: 'AI Tool Output', authors: 'OpenAI', year: '2025' },
-      showHint: true,
       correct: 'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "List three concise revision bullet points on photosynthesis for GCSE." Generated 20 September 2025. Available at: https://chat.openai.com/ (Accessed: 20 September 2025).',
       options: [
         'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "List three concise revision bullet points on photosynthesis for GCSE." Generated 20 September 2025. Available at: https://chat.openai.com/ (Accessed: 20 September 2025).',
@@ -23,7 +21,6 @@ const sourcesBySubject = {
     },
     {
       source: { title: 'GPT‑4 Technical Report', type: 'Report', authors: 'OpenAI', year: '2023' },
-      showHint: true,
       correct: 'OpenAI. (2023). GPT-4 Technical Report. Available at: https://arxiv.org/abs/2303.08774 (Accessed: 19 September 2025).',
       options: [
         'OpenAI. (2023). GPT-4 Technical Report. Available at: https://arxiv.org/abs/2303.08774 (Accessed: 19 September 2025).',
@@ -32,6 +29,21 @@ const sourcesBySubject = {
       ]
     },
     // Appendix style question: selecting best practice about including prompt transcript (editable vs screenshot)
+    {
+      mode: 'appendix',
+      source: { title: 'Appendix A: Example AI Prompt Transcript', type: 'Appendix', authors: 'OpenAI', year: '2025' },
+      chatTranscript: [
+        'User Prompt (19 Sep 2025, 10:14 BST): Explain overfitting in two exam-friendly sentences.',
+        'ChatGPT: Overfitting occurs when a model memorises training data patterns including noise, reducing generalisation.',
+        'ChatGPT: It is detected by a widening gap between low training error and higher validation error.'
+      ],
+      correct: 'Make this uneditable (screenshot).',
+      options: [
+        'Provide a searchable, clearly labelled appendix (e.g., Appendix A) with full prompt, model name/version, date/time, and indicate any edits — do NOT use a non-searchable screenshot.',
+        'Include only a brief note in references (no prompt text) and omit appendix.',
+        'Make this uneditable (screenshot).'
+      ]
+    },
     {
       source: { title: 'Model usage methodology note', type: 'Methodology Note', authors: 'Student Author', year: '2025' },
       correct: 'Methodology note example (not always in reference list): An AI tool (ChatGPT, Sep 2025 version, OpenAI) was used for idea generation (Appendix A). Outputs were fact-checked and rewritten for accuracy.',
@@ -47,9 +59,9 @@ const sourcesBySubject = {
       source: { title: 'Appendix B: Brainstorming Prompt', type: 'Appendix', authors: 'OpenAI', year: '2025' },
       chatTranscript: [
         'User Prompt (21 Sep 2025, 08:02 UTC): Suggest three alternative hooks for an essay on biodiversity loss.',
-        'ChatGPT 4o: 1) "A silent collapse is unfolding ..."',
-        'ChatGPT 4o: 2) "Within a single human lifetime, ecosystems once vibrant ..."',
-        'ChatGPT 4o: 3) "Biodiversity loss is reshaping food webs before we finish mapping them."'
+        'ChatGPT: 1) "A silent collapse is unfolding ..."',
+        'ChatGPT: 2) "Within a single human lifetime, ecosystems once vibrant ..."',
+        'ChatGPT: 3) "Biodiversity loss is reshaping food webs before we finish mapping them."'
       ],
       correct: 'Make this uneditable (screenshot).',
       options: [
@@ -93,9 +105,9 @@ const sourcesBySubject = {
         'User Prompt (24 Sep 2025, 09:27 BST): Provide Harvard reference for the book Deep Learning by Goodfellow et al. 2016 MIT Press.',
         'ChatGPT: Goodfellow, I., Bengio, Y. & Courville, A. (2016). Deep Learning. Cambridge, MA: MIT Press.'
       ],
-      correct: 'Independently verify accuracy before use.',
+      correct: 'Make this uneditable (screenshot).',
       options: [
-        'Independently verify accuracy before use.',
+        'Include prompt + AI output; then independently verify accuracy before use.',
         'Use AI output directly with no verification disclaimer.',
         'Make this uneditable (screenshot).'
       ]
@@ -395,7 +407,6 @@ function nextQuestion() {
   shuffle(options);
   const falling = document.getElementById('falling-source');
   const sampleText = document.getElementById('sample-text');
-  const hintEl = document.getElementById('citation-hint');
 
   // Decide question type: explicit appendix mode takes priority
   if (q.mode === 'appendix') {
@@ -413,10 +424,6 @@ function nextQuestion() {
     falling.style.top = '0px';
     falling.textContent = buildSourceSummary(q.source);
     animateFalling();
-    if (hintEl && q.showHint) {
-      hintEl.textContent = 'Select the correct REFERENCE LIST citation';
-      hintEl.style.display = 'block';
-    } else if (hintEl) hintEl.style.display = 'none';
   } else if (currentType === QUESTION_TYPES.INTEXT_CITATION) {
     const intext = buildInTextOptions(q.correct);
     options = intext.options;
@@ -429,10 +436,6 @@ function nextQuestion() {
     falling.style.top = '0px';
     falling.textContent = intext.sampleParagraphMasked;
     animateFalling();
-    if (hintEl && q.showHint) {
-      hintEl.textContent = 'Select the correct IN-TEXT citation';
-      hintEl.style.display = 'block';
-    } else if (hintEl) hintEl.style.display = 'none';
   } else if (currentType === QUESTION_TYPES.APPENDIX_PROMPT) {
     if (sampleText) sampleText.style.display = 'none';
     falling.style.display = 'block';
@@ -440,38 +443,26 @@ function nextQuestion() {
     falling.innerHTML = '';
     const wrapper = document.createElement('div');
     wrapper.className = 'appendix-wrapper';
-
-    // Determine appendix letter based on how many appendix items already shown (count previous items in ai subject with mode appendix)
-    const aiAppendices = sources.filter(s => s.mode === 'appendix');
-    const indexInAppendix = aiAppendices.indexOf(q); // 0-based
-    const appendixLetter = indexInAppendix >= 0 ? String.fromCharCode('A'.charCodeAt(0) + indexInAppendix) : 'A';
-
     const heading = document.createElement('div');
     heading.className = 'appendix-heading';
-    heading.textContent = `Appendix ${appendixLetter}: Chat Transcript`;
-
+    heading.textContent = 'Appendix A: Chat Transcript (Editable Text)';
     const transcriptBox = document.createElement('div');
     transcriptBox.className = 'appendix-transcript';
-    transcriptBox.setAttribute('aria-label', 'Read-only AI prompt transcript.');
+    transcriptBox.setAttribute('contenteditable', 'true');
+    transcriptBox.setAttribute('aria-label', 'Editable AI prompt transcript. DO NOT replace with screenshot.');
     (q.chatTranscript || []).forEach(line => {
       const p = document.createElement('div');
       p.textContent = line;
       transcriptBox.appendChild(p);
     });
-
     const note = document.createElement('div');
     note.className = 'appendix-note';
-    note.textContent = 'Best practice: Provide searchable text (prompt + model/version + date/time + edits noted). Avoid screenshots.';
-
+    note.textContent = 'Best practice: Include prompt, model/version, date & time, and note edits. Avoid screenshots.';
     wrapper.appendChild(heading);
     wrapper.appendChild(transcriptBox);
     wrapper.appendChild(note);
     falling.appendChild(wrapper);
     animateFalling();
-    if (hintEl && q.showHint) {
-      hintEl.textContent = 'Select best PRACTICE for APPENDIX handling';
-      hintEl.style.display = 'block';
-    } else if (hintEl) hintEl.style.display = 'none';
   }
 
   options.forEach((opt, i) => {
