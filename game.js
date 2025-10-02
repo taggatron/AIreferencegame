@@ -33,21 +33,6 @@ const sourcesBySubject = {
     },
     // Appendix style question: selecting best practice about including prompt transcript (editable vs screenshot)
     {
-      mode: 'appendix',
-      source: { title: 'Appendix A: Example AI Prompt Transcript', type: 'Appendix', authors: 'OpenAI', year: '2025' },
-      chatTranscript: [
-        'User Prompt (19 Sep 2025, 10:14 BST): Explain overfitting in two exam-friendly sentences.',
-        'ChatGPT: Overfitting occurs when a model memorises training data patterns including noise, reducing generalisation.',
-        'ChatGPT: It is detected by a widening gap between low training error and higher validation error.'
-      ],
-      correct: 'Make this uneditable (screenshot).',
-      options: [
-        'Provide a searchable, clearly labelled appendix (e.g., Appendix A) with full prompt, model name/version, date/time, and indicate any edits — do NOT use a non-searchable screenshot.',
-        'Include only a brief note in references (no prompt text) and omit appendix.',
-        'Make this uneditable (screenshot).'
-      ]
-    },
-    {
       source: { title: 'Model usage methodology note', type: 'Methodology Note', authors: 'Student Author', year: '2025' },
       correct: 'Methodology note example (not always in reference list): An AI tool (ChatGPT, Sep 2025 version, OpenAI) was used for idea generation (Appendix A). Outputs were fact-checked and rewritten for accuracy.',
       options: [
