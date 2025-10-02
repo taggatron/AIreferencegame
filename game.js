@@ -59,9 +59,9 @@ const sourcesBySubject = {
       source: { title: 'Appendix B: Brainstorming Prompt', type: 'Appendix', authors: 'OpenAI', year: '2025' },
       chatTranscript: [
         'User Prompt (21 Sep 2025, 08:02 UTC): Suggest three alternative hooks for an essay on biodiversity loss.',
-        'ChatGPT: 1) "A silent collapse is unfolding ..."',
-        'ChatGPT: 2) "Within a single human lifetime, ecosystems once vibrant ..."',
-        'ChatGPT: 3) "Biodiversity loss is reshaping food webs before we finish mapping them."'
+        'ChatGPT 4o: 1) "A silent collapse is unfolding ..."',
+        'ChatGPT 4o: 2) "Within a single human lifetime, ecosystems once vibrant ..."',
+        'ChatGPT 4o: 3) "Biodiversity loss is reshaping food webs before we finish mapping them."'
       ],
       correct: 'Make this uneditable (screenshot).',
       options: [
@@ -105,9 +105,9 @@ const sourcesBySubject = {
         'User Prompt (24 Sep 2025, 09:27 BST): Provide Harvard reference for the book Deep Learning by Goodfellow et al. 2016 MIT Press.',
         'ChatGPT: Goodfellow, I., Bengio, Y. & Courville, A. (2016). Deep Learning. Cambridge, MA: MIT Press.'
       ],
-      correct: 'Make this uneditable (screenshot).',
+      correct: 'Independently verify accuracy before use.',
       options: [
-        'Include prompt + AI output; then independently verify accuracy before use.',
+        'Independently verify accuracy before use.',
         'Use AI output directly with no verification disclaimer.',
         'Make this uneditable (screenshot).'
       ]
