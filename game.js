@@ -3,6 +3,7 @@ const sourcesBySubject = {
     // Core AI referencing (JCQ-style inspired) examples. Always verify against latest institutional guidance.
     {
       source: { title: 'ChatGPT conversation (ethical implications prompt)', type: 'AI Tool Output', authors: 'OpenAI', year: '2025' },
+      showHint: true,
       correct: 'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Explain the ethical implications of AI in secondary education, focusing on assessment integrity." Generated 19 September 2025. Available at: https://chat.openai.com/ (Accessed: 19 September 2025).',
       options: [
         'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Explain the ethical implications of AI in secondary education, focusing on assessment integrity." Generated 19 September 2025. Available at: https://chat.openai.com/ (Accessed: 19 September 2025).',
@@ -12,6 +13,7 @@ const sourcesBySubject = {
     },
     {
       source: { title: 'Subject knowledge recap prompt', type: 'AI Tool Output', authors: 'OpenAI', year: '2025' },
+      showHint: true,
       correct: 'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "List three concise revision bullet points on photosynthesis for GCSE." Generated 20 September 2025. Available at: https://chat.openai.com/ (Accessed: 20 September 2025).',
       options: [
         'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "List three concise revision bullet points on photosynthesis for GCSE." Generated 20 September 2025. Available at: https://chat.openai.com/ (Accessed: 20 September 2025).',
@@ -21,6 +23,7 @@ const sourcesBySubject = {
     },
     {
       source: { title: 'GPT‑4 Technical Report', type: 'Report', authors: 'OpenAI', year: '2023' },
+      showHint: true,
       correct: 'OpenAI. (2023). GPT-4 Technical Report. Available at: https://arxiv.org/abs/2303.08774 (Accessed: 19 September 2025).',
       options: [
         'OpenAI. (2023). GPT-4 Technical Report. Available at: https://arxiv.org/abs/2303.08774 (Accessed: 19 September 2025).',
@@ -407,6 +410,7 @@ function nextQuestion() {
   shuffle(options);
   const falling = document.getElementById('falling-source');
   const sampleText = document.getElementById('sample-text');
+  const hintEl = document.getElementById('citation-hint');
 
   // Decide question type: explicit appendix mode takes priority
   if (q.mode === 'appendix') {
@@ -424,6 +428,10 @@ function nextQuestion() {
     falling.style.top = '0px';
     falling.textContent = buildSourceSummary(q.source);
     animateFalling();
+    if (hintEl && q.showHint) {
+      hintEl.textContent = 'Select the correct REFERENCE LIST citation';
+      hintEl.style.display = 'block';
+    } else if (hintEl) hintEl.style.display = 'none';
   } else if (currentType === QUESTION_TYPES.INTEXT_CITATION) {
     const intext = buildInTextOptions(q.correct);
     options = intext.options;
@@ -436,6 +444,10 @@ function nextQuestion() {
     falling.style.top = '0px';
     falling.textContent = intext.sampleParagraphMasked;
     animateFalling();
+    if (hintEl && q.showHint) {
+      hintEl.textContent = 'Select the correct IN-TEXT citation';
+      hintEl.style.display = 'block';
+    } else if (hintEl) hintEl.style.display = 'none';
   } else if (currentType === QUESTION_TYPES.APPENDIX_PROMPT) {
     if (sampleText) sampleText.style.display = 'none';
     falling.style.display = 'block';
@@ -463,6 +475,10 @@ function nextQuestion() {
     wrapper.appendChild(note);
     falling.appendChild(wrapper);
     animateFalling();
+    if (hintEl && q.showHint) {
+      hintEl.textContent = 'Select best PRACTICE for APPENDIX handling';
+      hintEl.style.display = 'block';
+    } else if (hintEl) hintEl.style.display = 'none';
   }
 
   options.forEach((opt, i) => {

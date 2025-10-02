@@ -55,6 +55,24 @@ body {
   line-height: 1.45;
   z-index: 1;
 }
+
+#citation-hint {
+  position: absolute;
+  top: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #eef6ff;
+  border: 1px solid #94b9ff;
+  color: #244168;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 6px rgba(80,120,255,0.12);
+  z-index: 4;
+  white-space: nowrap;
+}
 #options {
   position: absolute;
   bottom: clamp(12px, 3vh, 40px);
