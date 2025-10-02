@@ -1,5 +1,28 @@
 const sourcesBySubject = {
   ai: [
+    // End-of-text AI reference (new) examples
+    {
+      mode: 'end-reference',
+      source: { title: 'Ethical implications prompt', type: 'AI Tool Output', authors: 'OpenAI', year: '2025' },
+      prompt: 'Explain the ethical implications of AI in secondary education, focusing on assessment integrity.',
+      correct: 'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Explain the ethical implications of AI in secondary education, focusing on assessment integrity." Generated 19 September 2025. Available at: https://chat.openai.com/ (Accessed: 19 September 2025).',
+      options: [
+        'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Explain the ethical implications of AI in secondary education, focusing on assessment integrity." Generated 19 September 2025. Available at: https://chat.openai.com/ (Accessed: 19 September 2025).',
+        'OpenAI. (2025). ChatGPT output about ethical implications.',
+        'ChatGPT (2025) AI ethics answer (unverified).'
+      ]
+    },
+    {
+      mode: 'end-reference',
+      source: { title: 'Paraphrase assistance prompt', type: 'AI Tool Output', authors: 'OpenAI', year: '2025' },
+      prompt: 'Paraphrase: "Photosynthesis efficiency is constrained by enzyme kinetics." Keep technical precision.',
+      correct: 'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Paraphrase: \"Photosynthesis efficiency is constrained by enzyme kinetics.\" Keep technical precision." Generated 22 September 2025. Available at: https://chat.openai.com/ (Accessed: 22 September 2025).',
+      options: [
+        'OpenAI. (2025). ChatGPT (Sep 2025 version) [Large language model]. Prompt: "Paraphrase: \"Photosynthesis efficiency is constrained by enzyme kinetics.\" Keep technical precision." Generated 22 September 2025. Available at: https://chat.openai.com/ (Accessed: 22 September 2025).',
+        'ChatGPT paraphrase help (2025).',
+        'OpenAI ChatGPT. (2025). Paraphrase output.'
+      ]
+    },
     
     // Appendix style question: selecting best practice about including prompt transcript (editable vs screenshot)
     {
@@ -86,11 +109,12 @@ let score = 0;
 let subject = 'ai';
 let sources = sourcesBySubject[subject];
 
-// Expanded question types, adding appendix prompt evaluation
+// Expanded question types, adding appendix prompt + end-reference evaluation
 const QUESTION_TYPES = {
   FULL_REFERENCE: 'reference-to-full',
   INTEXT_CITATION: 'intext-citation',
-  APPENDIX_PROMPT: 'appendix-prompt'
+  APPENDIX_PROMPT: 'appendix-prompt',
+  END_REFERENCE: 'end-reference'
 };
 let currentType = QUESTION_TYPES.FULL_REFERENCE;
 
@@ -145,10 +169,12 @@ function nextQuestion() {
   // Decide question type: explicit appendix mode takes priority
   if (q.mode === 'appendix') {
     currentType = QUESTION_TYPES.APPENDIX_PROMPT;
+  } else if (q.mode === 'end-reference') {
+    currentType = QUESTION_TYPES.END_REFERENCE;
   } else {
     const r = Math.random();
-    if (r < 0.55) currentType = QUESTION_TYPES.FULL_REFERENCE;
-    else if (r < 0.9) currentType = QUESTION_TYPES.INTEXT_CITATION;
+    if (r < 0.5) currentType = QUESTION_TYPES.FULL_REFERENCE;
+    else if (r < 0.8) currentType = QUESTION_TYPES.INTEXT_CITATION;
     else currentType = QUESTION_TYPES.APPENDIX_PROMPT;
   }
 
@@ -191,11 +217,18 @@ function nextQuestion() {
     });
     const note = document.createElement('div');
     note.className = 'appendix-note';
-    note.textContent = 'Best practice: Include prompt, model/version, date & time, and note edits. Avoid screenshots.';
+    note.textContent = 'Best practice: Include prompt, model/version, date & time.';
     wrapper.appendChild(heading);
     wrapper.appendChild(transcriptBox);
     wrapper.appendChild(note);
     falling.appendChild(wrapper);
+    animateFalling();
+  } else if (currentType === QUESTION_TYPES.END_REFERENCE) {
+    if (sampleText) sampleText.style.display = 'none';
+    falling.style.display = 'block';
+    falling.style.top = '0px';
+    falling.classList.add('end-ref');
+    falling.textContent = 'End-of-text reference required: ' + (q.prompt ? 'Prompt "' + q.prompt.slice(0, 70) + (q.prompt.length > 70 ? '…"' : '"') : buildSourceSummary(q.source));
     animateFalling();
   }
 
@@ -235,6 +268,8 @@ function checkAnswer(selected) {
   } else if (currentType === QUESTION_TYPES.INTEXT_CITATION) {
     isCorrect = selected === q.correctInText;
   } else if (currentType === QUESTION_TYPES.APPENDIX_PROMPT) {
+    isCorrect = selected === q.correct;
+  } else if (currentType === QUESTION_TYPES.END_REFERENCE) {
     isCorrect = selected === q.correct;
   }
   if (isCorrect) {
