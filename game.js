@@ -139,7 +139,25 @@ function startGame() {
 }
 
 function updateScore() {
-  document.getElementById('score').textContent = `Score: ${score}`;
+  const scoreEl = document.getElementById('score');
+  if (!scoreEl) return;
+  const flair = scoreFlair(score);
+  scoreEl.textContent = `Score: ${score} ${flair}`.trim();
+  scoreEl.setAttribute('aria-label', `Score ${score}`);
+}
+
+// Return progressively more flamboyant emoji sets for higher scores
+function scoreFlair(val) {
+  if (val < 2) return '✨';               // getting started
+  if (val < 3) return '✨⭐';             // warming up
+  if (val < 6) return '🌟🚀';            // building momentum
+  if (val < 8) return '🔥🚀🌈';          // on fire
+  if (val < 10) return '🔥🚀🌈💎';        // elite tier
+  if (val < 30) return '🔥🚀🌈💎👑';      // regal streak
+  if (val < 40) return '🔥🚀🌈💎👑🧠';    // mastery
+  if (val < 55) return '🔥🚀🌈💎👑🧠🎯';  // precision master
+  if (val < 70) return '🔥🚀🌈💎👑🧠🎯⚡'; // unstoppable
+  return '🔥🚀🌈💎👑🧠🎯⚡🌍';            // legend status
 }
 
 function blankOutReference(ref) {
