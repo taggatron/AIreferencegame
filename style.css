@@ -1,0 +1,166 @@
+body {
+  background: linear-gradient(135deg, #e0e7ff 0%, #f4f4f4 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+#game-container {
+  width: min(96vw, 1600px);
+  height: min(90vh, 900px);
+  margin: 2vh auto;
+  background: rgba(255,255,255,0.95);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(80,120,255,0.15), 0 1.5px 8px rgba(0,0,0,0.08);
+  padding: 30px 20px 40px 20px;
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+  max-height: 100%;
+  border: 2px solid #b3c6ff;
+}
+#falling-source {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #e3e3ff 60%, #c7eaff 100%);
+  padding: 22px 32px;
+  border-radius: 16px;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  min-width: 220px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(80,120,255,0.10);
+  border: 1.5px solid #b3c6ff;
+  color: #2a3a5a;
+  font-weight: 500;
+  z-index: 2;
+  letter-spacing: 0.01em;
+}
+#sample-text {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 900px;
+  background: #f7fbff;
+  border: 1px dashed #b3c6ff;
+  color: #2a3a5a;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  line-height: 1.45;
+  z-index: 1;
+}
+#options {
+  position: absolute;
+  bottom: clamp(12px, 3vh, 40px);
+  left: 0;
+  width: 100%;
+  display: grid; /* one row, three columns */
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  justify-items: center;
+  z-index: 1;
+  gap: 12px;
+  padding: 0 12px;
+}
+#options button {
+  background: linear-gradient(90deg, #4f8cff 60%, #6fd6ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px clamp(12px, 2.5vw, 28px);
+  font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(80,120,255,0.10);
+  transition: background 0.2s, transform 0.1s;
+  outline: none;
+  letter-spacing: 0.01em;
+  width: 100%; /* fill grid cell */
+  white-space: normal; /* allow wrapping */
+  overflow-wrap: anywhere; /* break long strings */
+  word-break: break-word;
+}
+#options button:hover {
+  background: linear-gradient(90deg, #3766c3 60%, #4fd6ff 100%);
+  transform: scale(1.07);
+}
+#game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  font-size: 2.2em;
+  color: #d32f2f;
+  background: rgba(255,255,255,0.98);
+  padding: 28px 40px;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(211,47,47,0.10);
+  z-index: 10;
+  border: 2px solid #ffb3b3;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+#game-over .game-over-title { font-size: clamp(1.4rem, 4vw, 2rem); }
+#restart-btn {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(46,125,50,0.2);
+}
+#restart-btn:hover { background: #256628; }
+#score {
+  position: absolute;
+  top: 18px;
+  right: 36px;
+  font-size: clamp(1rem, 2.8vw, 1.2rem);
+  color: #4f8cff;
+  background: #f0f6ff;
+  padding: 10px 24px;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(80,120,255,0.08);
+  font-weight: 600;
+  border: 1.5px solid #b3c6ff;
+  z-index: 5;
+  white-space: nowrap;
+}
+
+/* Appendix prompt question styles */
+.appendix-wrapper { text-align: left; max-width: 520px; }
+.appendix-heading { font-weight:600; font-size:0.9rem; margin-bottom:4px; color:#2a3a5a; }
+.appendix-transcript { background:#ffffff; border:1px solid #b3c6ff; padding:6px 8px; border-radius:8px; max-height:140px; overflow:auto; font-size:0.72rem; line-height:1.25; }
+.appendix-transcript:focus { outline:2px solid #4f8cff; }
+.appendix-transcript div { margin-bottom:2px; }
+.appendix-note { margin-top:6px; font-size:0.65rem; color:#2a3a5a; opacity:0.9; }
+
+/* Mobile adjustments */
+@media (max-width: 720px) {
+  body { overflow: auto; }
+  #game-container {
+    width: 98vw;
+    height: auto;
+    min-height: 92vh;
+  }
+  #falling-source { max-width: calc(100% - 40px); }
+  /* Keep options pinned near bottom even on mobile, still 3 columns */
+  #options { position: absolute; bottom: 16px; left: 0; width: 100%; }
+  #options button { width: 100%; }
+  /* Keep score on same top row */
+  #score { position: absolute; top: 12px; right: 16px; margin: 0; }
+}
+
+/* Prevent Subject label from wrapping */
+#subject-label { white-space: nowrap; }

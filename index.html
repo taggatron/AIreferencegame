@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Referencing Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <div id="toolbar" style="position:absolute;top:18px;left:36px;z-index:10;">
+      <label id="subject-label" for="subject-select" style="font-size:1.1em;font-weight:500;color:#2a3a5a;">Subject:</label>
+      <select id="subject-select" style="font-size:1.1em;padding:6px 16px;border-radius:8px;border:1.5px solid #b3c6ff;background:#f0f6ff;">
+        <option value="ai" selected>AI Referencing</option>
+        <option value="science">Science</option>
+        <option value="history">History</option>
+        <option value="literature">Literature</option>
+        <option value="psychology">Psychology</option>
+        <option value="business">Business</option>
+      </select>
+    </div>
+    <div id="falling-source"></div>
+    <div id="sample-text" aria-live="polite" style="display:none;"></div>
+    <div id="options">
+      <button id="option1"></button>
+      <button id="option2"></button>
+      <button id="option3"></button>
+    </div>
+    <div id="game-over" style="display:none;">
+      <div class="game-over-title">Game Over</div>
+      <button id="restart-btn" type="button">Restart</button>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
