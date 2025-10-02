@@ -441,23 +441,18 @@ function nextQuestion() {
     const wrapper = document.createElement('div');
     wrapper.className = 'appendix-wrapper';
 
-    // Decide whether transcript should be editable. If the correct answer discourages screenshots
-    // we keep it editable; if the correct answer IS one of the best practice guidance lines (not screenshot)
-    // we can still allow editing. However user reports one appendix is wrongly editable – so we add explicit rule:
-    // If q.correct === 'Make this uneditable (screenshot).' then we render static transcript (NOT editable),
-    // else we render editable transcript as before.
-    const shouldBeStatic = q.correct === 'Make this uneditable (screenshot).';
+    // Determine appendix letter based on how many appendix items already shown (count previous items in ai subject with mode appendix)
+    const aiAppendices = sources.filter(s => s.mode === 'appendix');
+    const indexInAppendix = aiAppendices.indexOf(q); // 0-based
+    const appendixLetter = indexInAppendix >= 0 ? String.fromCharCode('A'.charCodeAt(0) + indexInAppendix) : 'A';
 
     const heading = document.createElement('div');
     heading.className = 'appendix-heading';
-    heading.textContent = shouldBeStatic ? 'Appendix A: Chat Transcript' : 'Appendix A: Chat Transcript (Editable Text)';
+    heading.textContent = `Appendix ${appendixLetter}: Chat Transcript`;
 
     const transcriptBox = document.createElement('div');
     transcriptBox.className = 'appendix-transcript';
-    if (!shouldBeStatic) {
-      transcriptBox.setAttribute('contenteditable', 'true');
-      transcriptBox.setAttribute('aria-label', 'Editable AI prompt transcript. DO NOT replace with screenshot.');
-    }
+    transcriptBox.setAttribute('aria-label', 'Read-only AI prompt transcript.');
     (q.chatTranscript || []).forEach(line => {
       const p = document.createElement('div');
       p.textContent = line;
@@ -466,9 +461,7 @@ function nextQuestion() {
 
     const note = document.createElement('div');
     note.className = 'appendix-note';
-    note.textContent = shouldBeStatic
-      ? 'Best practice already illustrated — transcript displayed read-only here.'
-      : 'Best practice: Include prompt, model/version, date & time, and note edits. Avoid screenshots.';
+    note.textContent = 'Best practice: Provide searchable text (prompt + model/version + date/time + edits noted). Avoid screenshots.';
 
     wrapper.appendChild(heading);
     wrapper.appendChild(transcriptBox);
