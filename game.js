@@ -455,21 +455,36 @@ function nextQuestion() {
     falling.innerHTML = '';
     const wrapper = document.createElement('div');
     wrapper.className = 'appendix-wrapper';
+
+    // Decide whether transcript should be editable. If the correct answer discourages screenshots
+    // we keep it editable; if the correct answer IS one of the best practice guidance lines (not screenshot)
+    // we can still allow editing. However user reports one appendix is wrongly editable – so we add explicit rule:
+    // If q.correct === 'Make this uneditable (screenshot).' then we render static transcript (NOT editable),
+    // else we render editable transcript as before.
+    const shouldBeStatic = q.correct === 'Make this uneditable (screenshot).';
+
     const heading = document.createElement('div');
     heading.className = 'appendix-heading';
-    heading.textContent = 'Appendix A: Chat Transcript (Editable Text)';
+    heading.textContent = shouldBeStatic ? 'Appendix A: Chat Transcript' : 'Appendix A: Chat Transcript (Editable Text)';
+
     const transcriptBox = document.createElement('div');
     transcriptBox.className = 'appendix-transcript';
-    transcriptBox.setAttribute('contenteditable', 'true');
-    transcriptBox.setAttribute('aria-label', 'Editable AI prompt transcript. DO NOT replace with screenshot.');
+    if (!shouldBeStatic) {
+      transcriptBox.setAttribute('contenteditable', 'true');
+      transcriptBox.setAttribute('aria-label', 'Editable AI prompt transcript. DO NOT replace with screenshot.');
+    }
     (q.chatTranscript || []).forEach(line => {
       const p = document.createElement('div');
       p.textContent = line;
       transcriptBox.appendChild(p);
     });
+
     const note = document.createElement('div');
     note.className = 'appendix-note';
-    note.textContent = 'Best practice: Include prompt, model/version, date & time, and note edits. Avoid screenshots.';
+    note.textContent = shouldBeStatic
+      ? 'Best practice already illustrated — transcript displayed read-only here.'
+      : 'Best practice: Include prompt, model/version, date & time, and note edits. Avoid screenshots.';
+
     wrapper.appendChild(heading);
     wrapper.appendChild(transcriptBox);
     wrapper.appendChild(note);
